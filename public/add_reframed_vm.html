@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Add Reframed VM</title>
+</head>
+
+<body>
+    <h1>Adding Reframed VM...</h1>
+    <pre id="output"></pre>
+
+    <script type="module">
+        import { analyzeComprehensive } from './src/services/analyzer.js';
+        import { makeDecision } from './src/services/decisionMaker.js';
+
+        const output = document.getElementById('output');
+
+        async function addReframedVM() {
+            try {
+                // Get existing VMs
+                const vms = JSON.parse(localStorage.getItem('austina_vms') || '[]');
+                output.textContent += 'Current VMs: ' + vms.length + '\n\n';
+
+                // Get OKRs to find JS Product OKR
+                const okrs = JSON.parse(localStorage.getItem('austina_okrs') || '[]');
+                const jsOKR = okrs.find(o => o.buName === 'JS Product');
+
+                if (!jsOKR) {
+                    output.textContent += '❌ No JS Product OKR found. Please create one first.\n';
+                    return;
+                }
+
+                output.textContent += '✅ Found JS Product OKR: ' + jsOKR.objective + '\n\n';
+
+                // Create new reframed VM
+                const newVM = {
+                    id: 'vm-' + Date.now(),
+                    metricName: "Auto-Update Job Application Status in Profile",
+                    description: "Automatically sync and display job application status updates in the jobseeker's profile dashboard, helping them track progress without leaving the platform",
+                    baselineRate: "15",
+                    targetRate: "45",
+                    minVolume: "2000",
+                    bu: "JS Product",
+                    selectedOKR: jsOKR.id + '-' + jsOKR.keyResults[0].id,
+                    okrRationale: "Real-time status visibility in profile keeps jobseekers engaged with the platform and helps them take timely actions on their applications, leading to more positive result behaviors",
+                    createdAt: new Date().toISOString()
+                };
+
+                output.textContent += '📝 Creating VM:\n';
+                output.textContent += '   Name: ' + newVM.metricName + '\n';
+                output.textContent += '   BU: ' + newVM.bu + '\n';
+                output.textContent += '   Stats: 15% → 45% (2000 users)\n\n';
+
+                // Analyze it
+                output.textContent += '🔄 Analyzing...\n\n';
+
+                const analysis = await analyzeComprehensive(newVM, jsOKR);
+                const decision = makeDecision(analysis, newVM);
+
+                // Create combined analysis
+                const combinedAnalysis = {
+                    score: decision.decision.final_score,
+                    insights: analysis.overall_insights || [],
+                    suggestions: analysis.red_flags || [],
+                    timestamp: new Date().toISOString(),
+                    analyzerReport: analysis,
+                    decisionReport: decision
+                };
+
+                newVM.status = 'analyzed';
+                newVM.strategicCompassAnalysis = combinedAnalysis;
+                newVM.decisionMakerAnalysis = decision;
+
+                output.textContent += '✅ Analysis Complete!\n';
+                output.textContent += '   Score: ' + decision.decision.final_score + '/100\n';
+                output.textContent += '   Verdict: ' + decision.decision.verdict + '\n';
+                output.textContent += '   Priority: ' + decision.decision.priority + '\n\n';
+
+                // Add to VMs array
+                vms.push(newVM);
+
+                // Save to localStorage
+                localStorage.setItem('austina_vms', JSON.stringify(vms));
+
+                output.textContent += '💾 Saved to localStorage!\n';
+                output.textContent += '📊 Total VMs now: ' + vms.length + '\n\n';
+                output.textContent += '✅ DONE! Redirecting to VM page in 2 seconds...\n';
+
+                setTimeout(() => {
+                    window.location.href = '/vm';
+                }, 2000);
+
+            } catch (error) {
+                output.textContent += '❌ Error: ' + error.message + '\n';
+                console.error(error);
+            }
+        }
+
+        addReframedVM();
+    </script>
+</body>
+
+</html>

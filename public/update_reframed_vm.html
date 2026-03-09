@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Update VM to Reframed Version</title>
+</head>
+
+<body>
+    <h1>Updating VM...</h1>
+    <pre id="output"></pre>
+
+    <script type="module">
+        import { analyzeComprehensive } from './src/services/analyzer.js';
+        import { makeDecision } from './src/services/decisionMaker.js';
+
+        const output = document.getElementById('output');
+
+        async function updateVM() {
+            try {
+                // Get existing VMs
+                const vms = JSON.parse(localStorage.getItem('austina_vms') || '[]');
+                output.textContent += 'Found ' + vms.length + ' VMs\n\n';
+
+                // Find the "Update Applied Job Status from Email" VM
+                const vmIndex = vms.findIndex(vm =>
+                    vm.metricName && vm.metricName.includes('Applied Job Status')
+                );
+
+                if (vmIndex === -1) {
+                    output.textContent += '❌ VM not found. Please create it first in the UI.\n';
+                    return;
+                }
+
+                output.textContent += '✅ Found VM: ' + vms[vmIndex].metricName + '\n\n';
+
+                // Update with reframed version
+                vms[vmIndex].metricName = "Auto-Update Job Application Status in Profile";
+                vms[vmIndex].description = "Automatically sync and display job application status updates in the jobseeker's profile dashboard, helping them track progress without leaving the platform";
+                vms[vmIndex].okrRationale = "Real-time status visibility in profile keeps jobseekers engaged with the platform and helps them take timely actions on their applications, leading to more positive result behaviors";
+
+                output.textContent += '📝 Updated VM details:\n';
+                output.textContent += '   Name: ' + vms[vmIndex].metricName + '\n';
+                output.textContent += '   Description: ' + vms[vmIndex].description + '\n\n';
+
+                // Get OKR data
+                const okrs = JSON.parse(localStorage.getItem('austina_okrs') || '[]');
+                const okr = okrs.find(o => vms[vmIndex].selectedOKR && vms[vmIndex].selectedOKR.startsWith(o.id));
+
+                if (okr) {
+                    output.textContent += '🔄 Re-analyzing with new framing...\n\n';
+
+                    // Re-analyze
+                    const analysis = await analyzeComprehensive(vms[vmIndex], okr);
+                    const decision = makeDecision(analysis, vms[vmIndex]);
+
+                    // Update VM with new analysis
+                    const combinedAnalysis = {
+                        score: decision.decision.final_score,
+                        insights: analysis.overall_insights || [],
+                        suggestions: analysis.red_flags || [],
+                        timestamp: new Date().toISOString(),
+                        analyzerReport: analysis,
+                        decisionReport: decision
+                    };
+
+                    vms[vmIndex].status = 'analyzed';
+                    vms[vmIndex].strategicCompassAnalysis = combinedAnalysis;
+                    vms[vmIndex].decisionMakerAnalysis = decision;
+
+                    output.textContent += '✅ Analysis Complete!\n';
+                    output.textContent += '   Score: ' + decision.decision.final_score + '/100\n';
+                    output.textContent += '   Verdict: ' + decision.decision.verdict + '\n';
+                    output.textContent += '   Priority: ' + decision.decision.priority + '\n\n';
+                }
+
+                // Save back to localStorage
+                localStorage.setItem('austina_vms', JSON.stringify(vms));
+
+                output.textContent += '💾 Saved to localStorage!\n\n';
+                output.textContent += '✅ DONE! Redirecting to VM page in 3 seconds...\n';
+
+                setTimeout(() => {
+                    window.location.href = '/vm';
+                }, 3000);
+
+            } catch (error) {
+                output.textContent += '❌ Error: ' + error.message + '\n';
+                console.error(error);
+            }
+        }
+
+        updateVM();
+    </script>
+</body>
+
+</html>

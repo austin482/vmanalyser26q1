@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Show Current VMs</title>
+</head>
+
+<body>
+    <h1>Current VMs in localStorage</h1>
+    <pre id="output"></pre>
+
+    <script>
+        const output = document.getElementById('output');
+
+        try {
+            const vms = JSON.parse(localStorage.getItem('austina_vms') || '[]');
+
+            output.textContent += 'Total VMs: ' + vms.length + '\n\n';
+
+            if (vms.length === 0) {
+                output.textContent += '❌ No VMs found.\n\n';
+                output.textContent += 'Please create the VM first using the UI at http://localhost:5173/vm\n';
+            } else {
+                vms.forEach((vm, i) => {
+                    output.textContent += `VM ${i + 1}:\n`;
+                    output.textContent += `  Name: ${vm.metricName}\n`;
+                    output.textContent += `  BU: ${vm.bu}\n`;
+                    output.textContent += `  Status: ${vm.status || 'not analyzed'}\n`;
+                    if (vm.strategicCompassAnalysis) {
+                        output.textContent += `  Score: ${vm.strategicCompassAnalysis.score}/100\n`;
+                    }
+                    output.textContent += '\n';
+                });
+            }
+
+        } catch (error) {
+            output.textContent += '❌ Error: ' + error.message + '\n';
+        }
+    </script>
+</body>
+
+</html>

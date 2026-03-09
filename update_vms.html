@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Update VMs with Analysis</title>
+    <style>
+        body { font-family: monospace; padding: 20px; background: #1e1e1e; color: #00ff00; }
+        pre { background: #000; padding: 15px; border-radius: 5px; }
+    </style>
+</head>
+<body>
+    <h1>🔄 Updating VMs with Analysis Results...</h1>
+    <pre id="output"></pre>
+    
+    <script src="update_vms_with_analysis.js"></script>
+    <script>
+        // Redirect console.log to display
+        const output = document.getElementById('output');
+        const originalLog = console.log;
+        console.log = function(...args) {
+            originalLog.apply(console, args);
+            output.textContent += args.join(' ') + '\n';
+        };
+    </script>
+</body>
+</html>

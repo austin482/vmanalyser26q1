@@ -1,0 +1,433 @@
+[
+    {
+        "quarter": "2026 Q1",
+        "buName": "Catalyst - Contact",
+        "objective": "",
+        "keyResults": [
+            {
+                "id": "kr1",
+                "category": "Increase number of reachable contact",
+                "metrics": [
+                    "Number of Phone Contact that Reachable",
+                    "Number of Email that Reachable",
+                    "Number of Whatsapp that Reachable"
+                ],
+                "ratio": "50%",
+                "pic": "",
+                "target": "",
+                "projection": ""
+            },
+            {
+                "id": "kr2",
+                "category": "Improve Employer Contact data quality",
+                "metrics": [
+                    "Contact: For boss, HR director, HR manager, HR executive",
+                    "What ATS system does the company used",
+                    "How many recruiters does the company have",
+                    "The company 2026 annual hiring budget",
+                    "The company hiring expenses in past few years",
+                    "The company hiring position and headcounts in past few years"
+                ],
+                "ratio": "50%",
+                "pic": "",
+                "target": "",
+                "projection": ""
+            }
+        ],
+        "id": "1768185923739-5",
+        "createdAt": "2026-01-12T02:45:23.739Z",
+        "updatedAt": "2026-01-25T08:49:59.749Z"
+    },
+    {
+        "quarter": "2026 Q1",
+        "buName": "EMP Growth",
+        "objective": "",
+        "keyResults": [
+            {
+                "id": "kr1",
+                "category": "Positive Result for Alartcarte, Yearly Plan & Pecah",
+                "metrics": [
+                    "Number of jobseeker profiles being thumbs up, bookmarked, hide, contacted, download resume, shortlisted, interview, hires, unlocked",
+                    "Projection: 10k - 📄 Product Engineering OKR Appendix"
+                ],
+                "ratio": "50%",
+                "pic": "",
+                "target": "",
+                "projection": ""
+            },
+            {
+                "id": "kr2",
+                "category": "The number of employers actively managing their job ads at least one action from",
+                "metrics": [
+                    "Bookmarked, shortlisted, hired, rejected, hide, chat",
+                    "Projection: 51% - 📄 Product Engineering OKR Appendix"
+                ],
+                "ratio": "50%",
+                "pic": "",
+                "target": "",
+                "projection": ""
+            }
+        ],
+        "id": "1768185923739-6",
+        "createdAt": "2026-01-12T02:45:23.739Z",
+        "updatedAt": "2026-01-25T08:49:59.749Z"
+    },
+    {
+        "quarter": "2026 Q1",
+        "buName": "Search and Recommendation",
+        "objective": "",
+        "keyResults": [
+            {
+                "id": "kr1",
+                "category": "Positive Result for Candidate Search/Recommend",
+                "metrics": [
+                    "Number of jobseeker profiles being saved/bookmarked, shortlisted, hired, unlocked",
+                    "Projection: 15k - 📄 Product Engineering OKR Appendix"
+                ],
+                "ratio": "50%",
+                "pic": "",
+                "target": "",
+                "projection": ""
+            },
+            {
+                "id": "kr2",
+                "category": "Positive Result for Myfolder - AICS",
+                "metrics": [
+                    "Create and update folder",
+                    "Myfolder upgrade to AICS",
+                    "Number of jobseeker profiles being shortlisted, interview, hires, unlocked",
+                    "Projection: 1,500 - 📄 Product Engineering OKR Appendix"
+                ],
+                "ratio": "50%",
+                "pic": "",
+                "target": "",
+                "projection": ""
+            },
+            {
+                "id": "kr3",
+                "category": "Positive Result for Job Search / Recommend",
+                "metrics": [
+                    "360/Pecah",
+                    "◦ Number of views per jobs>500 views per week",
+                    "◦ Number of applications per job>2 per week",
+                    "Ala-carte & Yearly Plan",
+                    "◦ Number of views per jobs>1,000 views per week",
+                    "◦ Number of jobs hit MQA"
+                ],
+                "ratio": "50%",
+                "pic": "",
+                "target": "",
+                "projection": ""
+            },
+            {
+                "id": "kr4",
+                "category": "Positive Result",
+                "metrics": [
+                    "Company Search / Recommend",
+                    "◦ Number of companies page gain 300 views per week",
+                    "◦ Number of companies gain 50 new followers per week"
+                ],
+                "ratio": "50%",
+                "pic": "",
+                "target": "",
+                "projection": ""
+            },
+            {
+                "id": "kr5",
+                "category": "◦ Zero Result Rate",
+                "metrics": [
+                    "Job Search / Recommend",
+                    "◦ <10 Result Rate",
+                    "◦ Abandonment Rate",
+                    "Company Search / Recommend",
+                    "◦ Zero Result Rate",
+                    "◦ Abandonment Rate",
+                    "Candidate Search / Recommend",
+                    "◦ Zero Result Rate",
+                    "◦ <10 Result Rate",
+                    "◦ Abandonment Rate"
+                ],
+                "ratio": "50%",
+                "pic": "",
+                "target": "",
+                "projection": ""
+            }
+        ],
+        "id": "1768185923739-3",
+        "createdAt": "2026-01-12T02:45:23.739Z",
+        "updatedAt": "2026-01-25T08:49:59.749Z"
+    },
+    {
+        "quarter": "2026 Q1",
+        "buName": "Catalyst - Sales Success",
+        "objective": "",
+        "keyResults": [
+            {
+                "id": "kr1",
+                "category": "Sales Pipeline Support:",
+                "metrics": [
+                    "Number of Big Fish Lead",
+                    "Number of Quality Appointment",
+                    "Number of Big Invoice Created (More than 10k)",
+                    "Number of Big Invoice Paid (More than 10k and Paid)"
+                ],
+                "ratio": "50%",
+                "pic": "",
+                "target": "",
+                "projection": ""
+            }
+        ],
+        "id": "1768185923739-4",
+        "createdAt": "2026-01-12T02:45:23.739Z",
+        "updatedAt": "2026-01-25T08:49:59.749Z"
+    },
+    {
+        "quarter": "2026 Q1",
+        "buName": "JS Product - Application",
+        "objective": "",
+        "keyResults": [
+            {
+                "id": "kr1",
+                "category": "Good Result for Jobseeker",
+                "metrics": [
+                    "Number of job applicants being thumbs up, saved, bookmarked, contacted, downloaded resume, shortlisted, interviewed, hired by employer"
+                ],
+                "ratio": "50%",
+                "pic": "",
+                "target": "",
+                "projection": ""
+            },
+            {
+                "id": "kr2",
+                "category": "Number of apply job on the web",
+                "metrics": [
+                    "Number of new drop resumes (Non Mandarin) from web",
+                    "Number of new drop resumes (Mandarin) from web"
+                ],
+                "ratio": "50%",
+                "pic": "",
+                "target": "",
+                "projection": ""
+            },
+            {
+                "id": "kr3",
+                "category": "Good Experience forJobseeker",
+                "metrics": [
+                    "Number of job applications have response",
+                    "Number of drop resumes have response",
+                    "Number of new mobile apps download"
+                ],
+                "ratio": "50%",
+                "pic": "",
+                "target": "",
+                "projection": ""
+            }
+        ],
+        "id": "1768185923739-0",
+        "createdAt": "2026-01-12T02:45:23.739Z",
+        "updatedAt": "2026-01-25T08:49:59.744Z"
+    },
+    {
+        "quarter": "2026 Q1",
+        "buName": "The Job Ad Guardians",
+        "objective": "",
+        "keyResults": [
+            {
+                "id": "kr1",
+                "category": "Number of Job Ad posted",
+                "metrics": [
+                    "Projection: 1,700 - 📄 Product Engineering OKR Appendix"
+                ],
+                "ratio": "50%",
+                "pic": "",
+                "target": "",
+                "projection": ""
+            },
+            {
+                "id": "kr2",
+                "category": "Number of 2-way chats",
+                "metrics": [
+                    "Sync with Mobile App BU 📄 Q1 2026 OKR PKR - 17 Dec",
+                    "Projection: 50 chat - 📄 Product Engineering OKR Appendix"
+                ],
+                "ratio": "50%",
+                "pic": "",
+                "target": "",
+                "projection": ""
+            }
+        ],
+        "id": "1768185923739-7",
+        "createdAt": "2026-01-12T02:45:23.739Z",
+        "updatedAt": "2026-01-25T08:49:59.749Z"
+    },
+    {
+        "quarter": "2026 Q1",
+        "buName": "JS Product - Profile",
+        "objective": "",
+        "keyResults": [
+            {
+                "id": "kr1",
+                "category": "Good Result for Jobseeker",
+                "metrics": [
+                    "Number of unique jobseeker profiles being thumbs up, saved, bookmarked, contacted, download resume, shortlisted, interview, hires, unlocked by employer"
+                ],
+                "ratio": "50%",
+                "pic": "",
+                "target": "",
+                "projection": ""
+            },
+            {
+                "id": "kr2",
+                "category": "Bring in More Jobseeker Profiles",
+                "metrics": [
+                    "Number of public users converted to register users",
+                    "Number of new users created (Non Mandarin) from web",
+                    "Number of new users created (Mandarin) from web",
+                    "Number of profiles updated (Non AI assist) from web",
+                    "Number of profiles updated (AI assist) from web"
+                ],
+                "ratio": "50%",
+                "pic": "",
+                "target": "",
+                "projection": ""
+            },
+            {
+                "id": "kr3",
+                "category": "Grow Jobseeker Profiles Details, to have",
+                "metrics": [
+                    "Updated AI Summary (within 6 months)",
+                    "AI Skill",
+                    "Endorsement",
+                    "Portfolio",
+                    "Part Time, Freelance, SG, Volunteer preferences",
+                    "Public Profiles"
+                ],
+                "ratio": "50%",
+                "pic": "",
+                "target": "",
+                "projection": ""
+            }
+        ],
+        "id": "1768185923739-1",
+        "createdAt": "2026-01-12T02:45:23.739Z",
+        "updatedAt": "2026-01-25T08:49:59.749Z"
+    },
+    {
+        "quarter": "2026 Q1",
+        "buName": "Mobile App",
+        "objective": "",
+        "keyResults": [
+            {
+                "id": "kr1",
+                "category": "Number of 2-way chats",
+                "metrics": [
+                    "Sync with AJT Employer BU 📄 Q1 2026 OKR PKR - 17 Dec"
+                ],
+                "ratio": "50%",
+                "pic": "",
+                "target": "",
+                "projection": ""
+            },
+            {
+                "id": "kr2",
+                "category": "Good Result for Jobseeker",
+                "metrics": [
+                    "Number of job applicants being bookmarked, contacted, interviewed, shortlisted, hired by employer",
+                    "Number of jobseeker profiles being bookmark, saved, unlocked, paid, shortlisted, hired by employer"
+                ],
+                "ratio": "50%",
+                "pic": "",
+                "target": "",
+                "projection": ""
+            },
+            {
+                "id": "kr3",
+                "category": "Good Experience for Jobseeker",
+                "metrics": [
+                    "Number of active mobile apps users",
+                    "Number of job applications have response",
+                    "Number of drop resumes have response",
+                    "Number of FAQs have response",
+                    "Number of voucher tasks completed in mobile app"
+                ],
+                "ratio": "50%",
+                "pic": "",
+                "target": "",
+                "projection": ""
+            }
+        ],
+        "id": "1768185606269-2",
+        "createdAt": "2026-01-12T02:40:06.269Z",
+        "updatedAt": "2026-01-25T08:49:59.749Z"
+    },
+    {
+        "quarter": "2026 Q1",
+        "buName": "CbSEO",
+        "objective": "",
+        "keyResults": [
+            {
+                "id": "kr1",
+                "category": "Usage AJT :",
+                "metrics": [
+                    "Number of created/updated events from AJT company profiles [18,283] - 📄 Product Engineering OKR Appendix",
+                    "Number of engagement from company page [245K] - 📄 Product Engineering OKR Appendix",
+                    "AJT/MKRB Company Page Points:"
+                ],
+                "ratio": "50%",
+                "pic": "",
+                "target": "",
+                "projection": ""
+            },
+            {
+                "id": "kr2",
+                "category": "Positive Result",
+                "metrics": [
+                    "Number of jobseekers interested in walk-in interviews",
+                    "Number of jobseekers apply for jobs from company page",
+                    "Number of drop resumes received from Company Page",
+                    "Q4 Projection: 4.9k - 📄 Product Engineering OKR Appendix"
+                ],
+                "ratio": "50%",
+                "pic": "",
+                "target": "",
+                "projection": ""
+            },
+            {
+                "id": "kr3",
+                "category": "MK SEO + AI Clicks",
+                "metrics": [
+                    "Q4 Projection: 2.5m - 📄 Product Engineering OKR Appendix"
+                ],
+                "ratio": "50%",
+                "pic": "",
+                "target": "",
+                "projection": ""
+            },
+            {
+                "id": "kr4",
+                "category": "RB SEO + AI Clicks",
+                "metrics": [
+                    "Q4 Projection: 1.19m - 📄 Product Engineering OKR Appendix"
+                ],
+                "ratio": "50%",
+                "pic": "",
+                "target": "",
+                "projection": ""
+            },
+            {
+                "id": "kr5",
+                "category": "AJT SEO + AI Clicks",
+                "metrics": [
+                    "Q4 Projection: 65k - 📄 Product Engineering OKR Appendix"
+                ],
+                "ratio": "50%",
+                "pic": "",
+                "target": "",
+                "projection": ""
+            }
+        ],
+        "id": "1769330999749-0.06050656184139769",
+        "createdAt": "2026-01-25T08:49:59.749Z",
+        "updatedAt": "2026-01-25T08:49:59.749Z"
+    }
+]
