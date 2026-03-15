@@ -229,11 +229,10 @@ function extractText(raw) {
 function extractBUs(picBURaw) {
     const rawText = extractText(picBURaw);
     if (!rawText) return [];
-    // Handle "[BU1,BU2]" string format
-    if (rawText.startsWith('[') && rawText.endsWith(']')) {
-        return rawText.slice(1, -1).split(',').map(s => s.trim()).filter(Boolean);
-    }
-    return [rawText.trim()];
+
+    // First, strip [ and ] completely, then split by comma
+    const cleanText = rawText.replace(/\[/g, '').replace(/\]/g, '');
+    return cleanText.split(',').map(s => s.trim()).filter(Boolean);
 }
 
 // ─── Main Handler ─────────────────────────────────────────────────────────────
@@ -307,7 +306,7 @@ export default async function handler(req, res) {
 
                 // Write result back to Lark
                 await updateRecord(token, VM_TABLE_ID, vm.record_id, {
-                    'Austina Score': bestScore,
+                    'Austina Score (AI)': bestScore,
                     'AI Suggestion': suggestionText
                 });
 
