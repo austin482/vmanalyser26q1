@@ -3,8 +3,8 @@
 // VMs are stored/read from Lark Base (no local database needed)
 
 const LARK_API_BASE = 'https://open.larksuite.com/open-apis';
-const LARK_APP_ID = process.env.VITE_LARK_APP_ID || 'cli_a9d1efc6a2381ed4';
-const LARK_APP_SECRET = process.env.VITE_LARK_APP_SECRET || 'wWL8cXBdwk2895DpQFNzBgSgrkT1kujN';
+const LARK_APP_ID = process.env.VITE_LARK_APP_ID || 'cli_a9eed0d5dcb89ed3';
+const LARK_APP_SECRET = process.env.VITE_LARK_APP_SECRET || 'uwdb9LnnZbG66aPsP1hvReSGzNOzBZoZ';
 const BASE_ID = 'FUBhb3uUaa0h21suULgluANog8f';
 const VM_TABLE_ID = 'tblz3uSEbkQGVXRq';
 
