@@ -49,9 +49,9 @@ async function updateRecord(token, tableId, recordId, fields) {
 
 async function loadOKRsFromLark(token) {
     try {
-        // Fetch from our new /api/okrs endpoint which handles the row-aggregation logic
-        const host = process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'http://localhost:3000';
-        const res = await fetch(`${host}/api/okrs`);
+        // FIX: Use hardcoded correct URL instead of unreliable VERCEL_URL
+        const BASE_URL = 'https://vmanalyser2026.vercel.app';
+        const res = await fetch(`${BASE_URL}/api/okrs`);
         if (!res.ok) throw new Error('Failed to fetch parsed OKRs');
         return await res.json();
     } catch (err) {
