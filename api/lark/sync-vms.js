@@ -45,20 +45,110 @@ async function updateRecord(token, tableId, recordId, fields) {
     return data;
 }
 
-// ─── OKR Helpers ─────────────────────────────────────────────────────────────
+// OKR Wiki token (from https://ajobthing.sg.larksuite.com/wiki/Pweqw1j8Ci7yGkkIghNlZxmogLf)
+const OKR_WIKI_TOKEN = 'Pweqw1j8Ci7yGkkIghNlZxmogLf';
 
 async function loadOKRsFromLark(token) {
     try {
-        // FIX: Use hardcoded correct URL instead of unreliable VERCEL_URL
-        const BASE_URL = 'https://vmanalyser2026.vercel.app';
-        const res = await fetch(`${BASE_URL}/api/okrs`);
-        if (!res.ok) throw new Error('Failed to fetch parsed OKRs');
-        return await res.json();
+        // Step 1: Resolve wiki token → real doc token
+        const wikiRes = await fetch(
+            `${LARK_API_BASE}/wiki/v2/spaces/get_node?token=${OKR_WIKI_TOKEN}`,
+            { headers: { 'Authorization': `Bearer ${token}` } }
+        );
+        const wikiData = await wikiRes.json();
+        if (wikiData.code !== 0) throw new Error(`Wiki node fetch failed: ${wikiData.msg}`);
+        const docToken = wikiData.data?.node?.obj_token;
+        if (!docToken) throw new Error('Could not resolve wiki token to doc token');
+        console.log(`📄 Doc token: ${docToken}`);
+
+        // Step 2: Fetch raw text content of the document
+        const docRes = await fetch(
+            `${LARK_API_BASE}/docx/v1/documents/${docToken}/raw_content`,
+            { headers: { 'Authorization': `Bearer ${token}` } }
+        );
+        const docData = await docRes.json();
+        if (docData.code !== 0) throw new Error(`Doc content fetch failed: ${docData.msg}`);
+        const rawText = docData.data?.content || '';
+        console.log(`📄 Got ${rawText.length} chars from wiki`);
+
+        // Step 3: Parse the text into OKR groups
+        // Actual format: each table cell is its own line (newline-delimited, not tab-separated)
+        // "BU Name : JS Product - Application" → BU name
+        // "Obj 1" → next non-empty line is the objective text
+        // "KR 1.1" → next non-empty line is the KR text, then bullet metrics follow
+        const lines = rawText.split('\n').map(l => l.trim());
+        const SKIP = new Set(['No', 'Key Result', 'PIC', 'Projection', 'Ratio', 'Target']);
+        const okrGroups = {};
+        let currentBU = '', currentQuarter = '', currentObjKey = '';
+        let currentObjCounter = 0, currentKRNo = '';
+        let expectingObjText = false, expectingKRText = false;
+
+        for (const line of lines) {
+            if (!line || SKIP.has(line)) continue;
+
+            if (/^BU\s*Name\s*[:\-]/i.test(line)) {
+                currentBU = line.replace(/^BU\s*Name\s*[:\-]\s*/i, '').trim();
+                currentObjCounter = 0; currentObjKey = '';
+                expectingObjText = false; expectingKRText = false;
+                console.log(`  📁 BU: ${currentBU}`);
+                continue;
+            }
+            if (/^Quarter\s*:/i.test(line)) {
+                currentQuarter = line.replace(/^Quarter\s*:\s*/i, '').trim();
+                continue;
+            }
+            if (/^Obj\s*\d+$/i.test(line)) {
+                currentObjCounter++;
+                const key = `${currentBU}__${currentObjCounter}`;
+                currentObjKey = key;
+                okrGroups[key] = { buName: currentBU, quarter: currentQuarter, objective: '', keyResults: [] };
+                expectingObjText = true; expectingKRText = false;
+                continue;
+            }
+            if (expectingObjText && currentObjKey) {
+                okrGroups[currentObjKey].objective = line;
+                console.log(`    🎯 Obj ${currentObjCounter}: ${line.slice(0, 50)}`);
+                expectingObjText = false;
+                continue;
+            }
+            if (/^KR\s*\d+\.\d+/i.test(line) && currentObjKey) {
+                currentKRNo = line;
+                okrGroups[currentObjKey].keyResults.push({ category: '', metrics: [] });
+                expectingKRText = true; expectingObjText = false;
+                continue;
+            }
+            if (expectingKRText && currentObjKey) {
+                const krs = okrGroups[currentObjKey].keyResults;
+                if (krs.length > 0) {
+                    krs[krs.length - 1].category = line;
+                    krs[krs.length - 1].metrics = [line];
+                    console.log(`      📌 ${currentKRNo}: ${line.slice(0, 40)}`);
+                }
+                expectingKRText = false;
+                continue;
+            }
+            // Metric lines after a KR
+            if (currentObjKey && !expectingObjText && !expectingKRText) {
+                const krs = okrGroups[currentObjKey].keyResults;
+                if (krs.length > 0) {
+                    const words = line.split(' ');
+                    const isLikelyPIC = words.length <= 2 && line.length < 25 && !line.includes('Number') && !line.startsWith('•') && !line.startsWith('-');
+                    if (!isLikelyPIC) {
+                        krs[krs.length - 1].metrics.push(line.replace(/^[•\-\*]\s*/, '').trim());
+                    }
+                }
+            }
+        }
+
+        const result = Object.values(okrGroups).filter(o => o.buName && (o.keyResults.length > 0 || o.objective));
+        console.log(`✅ Parsed ${result.length} OKR groups. BUs: ${[...new Set(result.map(o => o.buName))].join(', ')}`);
+        return result;
     } catch (err) {
-        console.warn('⚠️ Could not load OKRs from API, using empty list:', err.message);
+        console.error('❌ Failed to load OKRs from Wiki:', err.message);
         return [];
     }
 }
+
 
 // ─── AI Scoring ──────────────────────────────────────────────────────────────
 
