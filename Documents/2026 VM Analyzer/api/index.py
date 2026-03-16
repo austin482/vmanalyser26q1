@@ -9,21 +9,24 @@ from main import run_analyzer
 
 app = Flask(__name__)
 
+import threading
+
 @app.route('/api/analyze', methods=['GET', 'POST'])
 @app.route('/api/lark/webhook', methods=['GET', 'POST'])
 def trigger_analysis():
     """
     Endpoint to trigger the Lark VM Analyzer.
     Can be called by a Lark Bitable Button/Automation.
+    Runs in background to avoid Lark timeouts.
     """
-    # Simple security check (optional but recommended)
-    # You can add a secret token in the URL or headers
-    # if request.args.get('token') != os.getenv('TRIGGER_TOKEN'):
-    #     return jsonify({"status": "error", "message": "Unauthorized"}), 401
+    print("Triggering analyzer background thread...")
+    thread = threading.Thread(target=run_analyzer)
+    thread.start()
     
-    print("Triggering analyzer via API...")
-    results = run_analyzer()
-    return jsonify(results)
+    return jsonify({
+        "status": "success",
+        "message": "Analysis started in background. Results will appear in Lark Base shortly."
+    })
 
 @app.route('/', methods=['GET'])
 def health_check():
