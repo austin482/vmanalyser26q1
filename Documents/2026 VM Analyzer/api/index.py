@@ -16,17 +16,11 @@ import threading
 def trigger_analysis():
     """
     Endpoint to trigger the Lark VM Analyzer.
-    Can be called by a Lark Bitable Button/Automation.
-    Runs in background to avoid Lark timeouts.
+    Processes records in parallel within the allowed time window.
     """
-    print("Triggering analyzer background thread...")
-    thread = threading.Thread(target=run_analyzer)
-    thread.start()
-    
-    return jsonify({
-        "status": "success",
-        "message": "Analysis started in background. Results will appear in Lark Base shortly."
-    })
+    print("Triggering analyzer via API...")
+    results = run_analyzer()
+    return jsonify(results)
 
 @app.route('/', methods=['GET'])
 def health_check():

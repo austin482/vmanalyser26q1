@@ -53,6 +53,8 @@ def extract_text(field_value) -> str:
             return field_value["text"]
     return str(field_value)
 
+from concurrent.futures import ThreadPoolExecutor, as_completed
+
 def run_analyzer():
     print("Initializing Lark Clients...")
     lark_doc = LarkClient(LARK_DOC_APP_ID, LARK_DOC_APP_SECRET)
@@ -68,75 +70,82 @@ def run_analyzer():
     try:
         # 1. Fetch OKR context from Document
         print("Fetching OKR rules from Document...")
-        try:
-            doc_blocks = lark_doc.get_document_blocks(LARK_DOC_TOKEN)
-            full_okr_text = parse_okr_doc(doc_blocks)
-            print(f"Loaded OKR context ({len(full_okr_text)} chars)")
-        except Exception as doc_error:
-            error_msg = f"Could not fetch real OKRs from Wiki: {doc_error}"
-            print(f"Warning: {error_msg}")
-            results["status"] = "partial_error"
-            results["errors"].append(error_msg)
-            return results
-
+        doc_blocks = lark_doc.get_document_blocks(LARK_DOC_TOKEN)
+        full_okr_text = parse_okr_doc(doc_blocks)
+        
         # 2. Fetch Value Metrics from Base
         print("Fetching Value Metrics from Base...")
         records = lark_base.get_base_records(LARK_BASE_TOKEN, LARK_TABLE_ID)
-        print(f"Loaded {len(records)} records.")
         
-        # 3. Process and Score
+        # 3. Filter pending records
+        pending_records = []
         for record in records:
+            fields = record.get("fields", {})
+            vm_pic = extract_text(fields.get("VM PIC"))
+            metric_name = extract_text(fields.get("Metric Name"))
+            austina_score = fields.get("Austina Score")
+            
+            # Reprocess if score is None, empty, or 0
+            if vm_pic and metric_name and (austina_score is None or austina_score == "" or str(austina_score) == "0"):
+                pending_records.append(record)
+
+        if not pending_records:
+            print("No pending records to process.")
+            return results
+
+        print(f"Starting parallel processing for {len(pending_records)} records...")
+        
+        def process_single(record):
             record_id = record.get("record_id")
             fields = record.get("fields", {})
-            
-            # Extract fields correctly
             vm_pic = extract_text(fields.get("VM PIC"))
             vm_bu = extract_text(fields.get("PIC BU"))
             metric_name = extract_text(fields.get("Metric Name"))
             description = extract_text(fields.get("Description"))
-            austina_score = fields.get("Austina Score")
             
-            # Skip if score is already there (handling both None and existence check)
-            # We use the score field directly because 'Status' is a formula column and unreliable for filtering.
-            # We re-process if the score is '0' or empty to resolve previous sync errors.
-            if vm_pic and metric_name and (austina_score is None or austina_score == "" or str(austina_score) == "0"):
-                print(f"\n--- Analyzing record {record_id} ---")
-                print(f"PIC: {vm_pic}, Metric: {metric_name}")
+            result = scorer.score_alignment(
+                doc_objective="Check matching OKR in context",
+                doc_key_result=full_okr_text,
+                doc_pic="See Context",
+                doc_bu="See Context",
+                vm_pic=vm_pic,
+                vm_bu=vm_bu,
+                vm_metric_name=metric_name,
+                vm_description=description
+            )
+            
+            score = result.get("score", 0)
+            suggestion = result.get("suggestion", "")
+            
+            update_fields = {
+                "Austina Score": int(score),
+                "AI Suggestion": suggestion
+            }
+            
+            success = lark_base.update_base_record(LARK_BASE_TOKEN, LARK_TABLE_ID, record_id, update_fields)
+            return success, record_id
+
+        # Use ThreadPool to process 5 at a time
+        with ThreadPoolExecutor(max_workers=5) as executor:
+            future_to_record = {executor.submit(process_single, rec): rec for rec in pending_records}
+            
+            # Limit the whole run to ~8.5 seconds to avoid Lark 10s timeout
+            import time
+            start_time = time.time()
+            
+            for future in as_completed(future_to_record):
+                if time.time() - start_time > 8.5:
+                    print("Reached 8.5s limit. Stopping batch.")
+                    break
                 
-                result = scorer.score_alignment(
-                    doc_objective="Check matching OKR in context",
-                    doc_key_result=full_okr_text,
-                    doc_pic="See Context",
-                    doc_bu="See Context",
-                    vm_pic=vm_pic,
-                    vm_bu=vm_bu,
-                    vm_metric_name=metric_name,
-                    vm_description=description
-                )
-                
-                score = result.get("score", 0)
-                suggestion = result.get("suggestion", "")
-                
-                print(f"-> Result: {score}/100")
-                
-                # 4. Update Base
-                update_fields = {
-                    "Austina Score": int(score),
-                    "AI Suggestion": suggestion
-                }
-                
-                success = lark_base.update_base_record(LARK_BASE_TOKEN, LARK_TABLE_ID, record_id, update_fields)
-                if success:
-                    print(f"Successfully updated record {record_id}")
-                    results["processed"] += 1
-                else:
-                    print(f"Failed to update record {record_id}")
-                    results["errors"].append(f"Failed to update {record_id}")
-                
-                # Sleep briefly to avoid API rate limits
-                time.sleep(1)
-        
-        print(f"\nProcessing complete. Analyzed {results['processed']} new records.")
+                try:
+                    success, r_id = future.result()
+                    if success:
+                        results["processed"] += 1
+                except Exception as e:
+                    results["errors"].append(str(e))
+
+        print(f"\nBatch complete. Analyzed {results['processed']} records.")
     except Exception as e:
         results["status"] = "error"
         results["errors"].append(str(e))
