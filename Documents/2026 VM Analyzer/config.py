@@ -1,0 +1,16 @@
+import os
+
+# Credentials for reading OKR Docs (cli_a9d1efc6a2381ed4 has Wiki access)
+LARK_DOC_APP_ID = os.getenv("LARK_DOC_APP_ID", "cli_a9d1efc6a2381ed4")
+LARK_DOC_APP_SECRET = os.getenv("LARK_DOC_APP_SECRET", "wWL8cXBdwk2895DpQFNzBgSgrkT1kujN")
+LARK_DOC_TOKEN = os.getenv("LARK_DOC_TOKEN", "Pweqw1j8Ci7yGkkIghNlZxmogLf")
+
+# Credentials for reading/writing Bitable (cli_a9eed0d5dcb89ed3 has Bitable access)
+LARK_BASE_APP_ID = os.getenv("LARK_BASE_APP_ID", "cli_a9eed0d5dcb89ed3")
+LARK_BASE_APP_SECRET = os.getenv("LARK_BASE_APP_SECRET", "uwdb9LnnZbG66aPsP1hvReSGzNOzBZoZ")
+LARK_BASE_TOKEN = os.getenv("LARK_BASE_TOKEN", "FUBhb3uUaa0h21suULgluANog8f")
+LARK_TABLE_ID = os.getenv("LARK_TABLE_ID", "tblz3uSEbkQGVXRq")
+
+OPENROUTER_API_KEY = os.getenv("OPENROUTER_API_KEY", "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")
+OPENROUTER_MODEL = os.getenv("OPENROUTER_MODEL", "openai/gpt-4o-mini")
+
